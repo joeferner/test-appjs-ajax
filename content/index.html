@@ -1,0 +1,45 @@
+<html>
+<head>
+  <title>test-appjs-ajax</title>
+</head>
+<body>
+Hello
+
+<script type="text/javascript">
+  setTimeout(makeRequestAsync, 1000);
+  //setTimeout(makeRequestSync, 1000);
+
+  function makeRequestAsync() {
+    console.log('makeRequest');
+    var request = new XMLHttpRequest();
+    request.open("GET", 'http://localhost:8887/test', true);
+    request.onreadystatechange = function() {
+      if (request.status == 404 || request.status == 2 || (request.status == 0 && request.responseText == '')) {
+        return console.error('request', request);
+      }
+
+      return console.log(request.responseText);
+    };
+    request.send(null);
+  }
+
+  function makeRequestSync() {
+    console.log('makeRequest');
+    var request = new XMLHttpRequest();
+    request.open("GET", 'http://localhost:8887/test', false);
+    try {
+      request.send(null);
+    }
+    catch (e) {
+      return console.error('error send:', e);
+    }
+
+    if (request.status == 404 || request.status == 2 || (request.status == 0 && request.responseText == '')) {
+      return console.error('request', request);
+    }
+
+    return console.log(request.responseText);
+  }
+</script>
+</body>
+</html>
